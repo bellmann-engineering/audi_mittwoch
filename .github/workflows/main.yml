@@ -15,3 +15,9 @@ jobs:
 
       - name: Compile main.cpp
         run: g++ -Wall main.cpp -o main
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: main-binary
+          path: main
