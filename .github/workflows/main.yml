@@ -14,4 +14,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Compile main.cpp
-        run: g++ main.cpp -o main
+        run: g++ -Wall main.cpp -o main
