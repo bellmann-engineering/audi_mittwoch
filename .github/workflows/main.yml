@@ -1,0 +1,17 @@
+name: Build main.cpp
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Compile main.cpp
+        run: g++ main.cpp -o main
