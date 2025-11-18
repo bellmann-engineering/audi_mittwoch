@@ -19,11 +19,26 @@ jobs:
       - name: Install clang-format
         run: sudo apt-get update && sudo apt-get install -y clang-format
 
+      - name: Install build tools and GoogleTest
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y g++ cmake clang-tidy clang-format libgtest-dev
+          sudo cmake -S /usr/src/gtest -B /usr/src/gtest/build
+          sudo cmake --build /usr/src/gtest/build
+          sudo cp /usr/src/gtest/build/lib/*.a /usr/lib
+
       #- name: Run clang-tidy
       #  run: clang-tidy main.cpp -- -std=c++17
 
       #- name: Run clang-format check
       #  run: clang-format --dry-run --Werror main.cpp
+
+      
+      - name: Build tests
+        run: g++ -std=c++17 -Wall tests/test_sum.cpp -lgtest -lgtest_main -pthread -o test_sum
+
+      - name: Run tests
+        run: ./test_sum
 
       - name: Compile main.cpp
         run: g++ -Wall main.cpp -o main
