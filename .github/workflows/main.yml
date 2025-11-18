@@ -68,3 +68,35 @@ jobs:
           echo "Deploying main binary..."
           chmod +x main
           ./main
+
+  release:
+    runs-on: ubuntu-latest
+    needs: deploy
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download built binary
+        uses: actions/download-artifact@v4
+        with:
+          name: main-binary
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: Release v1.0.${{ github.run_number }}
+          body: |
+            Automated deploy and release pipeline.
+            Commit: ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload binary to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          files: main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
